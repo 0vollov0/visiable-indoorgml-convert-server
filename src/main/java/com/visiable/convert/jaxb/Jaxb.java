@@ -49,8 +49,8 @@ public class Jaxb {
 		try {
 			context = JAXBContext.newInstance(IndoorFeatures.class);
 			marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new DefaultNamespacePrefixMapper());
-			//marshaller.setSchema(arg0);
 			marshaller.marshal(indoorFeatures, new FileOutputStream("./uploadedIndoorGML/converted_indoorGML.gml"));
 		} catch (JAXBException | FileNotFoundException e) {
 			e.printStackTrace();
