@@ -2,7 +2,9 @@
  
 ## 실행
 
-* Gradle 설치 https://gradle.org/releases/  환경 변수 세팅
+* Java version 11 이상 및 환경 변수 셋팅
+
+* Gradle 설치 https://gradle.org/releases/  환경 변수 팅
 
 * Gradle bootrun command 실행
 
