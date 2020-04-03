@@ -9,7 +9,6 @@ public class PrimalSpaceFeatures {
 	private String id;
 	private PrimalSpaceFeatures primalSpaceFeatures;
 	private BoundedBy boundedBy;
-	//private CellSpaceMember cellSpaceMember;
 	private List<CellSpaceMember> cellSpaceMember;
 
 	public PrimalSpaceFeatures() {

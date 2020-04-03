@@ -1,4 +1,5 @@
-@XmlSchema(namespace = "http://www.opengis.net/indoorgml/1.0/core",elementFormDefault = XmlNsForm.QUALIFIED, xmlns = {
+@XmlSchema(namespace = "http://www.opengis.net/indoorgml/1.0/core",elementFormDefault = XmlNsForm.QUALIFIED, 
+xmlns = {
 		@XmlNs(namespaceURI = "http://www.opengis.net/gml/3.2", prefix = "gml"),
 		@XmlNs(namespaceURI = "http://www.w3.org/1999/xlink", prefix = "xlink"),
 		@XmlNs(namespaceURI = "http://www.opengis.net/indoorgml/1.0/core", prefix = "core"),

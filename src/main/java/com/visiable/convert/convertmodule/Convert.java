@@ -10,6 +10,8 @@ import org.gdal.osr.SpatialReference;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.gml.multilayered.SpaceLayerMember;
+import com.gml.multilayered.StateMember;
 import com.gml.primalspace.CellSpaceMember;
 import com.gml.primalspace.IndoorFeatures;
 import com.gml.primalspace.Pos;
@@ -74,12 +76,12 @@ public class Convert {
 
 					double[] epsg3857 = ct.TransformPoint(resultX, resultY);
 					
-					//pos.changeX(resultX);
-					//pos.changeY(resultY);
+					pos.changeX(resultX);
+					pos.changeY(resultY);
 					
 					
-					pos.changeX(epsg3857[0]);
-					pos.changeY(epsg3857[1]);
+//					pos.changeX(epsg3857[0]);
+//					pos.changeY(epsg3857[1]);
 					
 					
 					pos.changeVector();
@@ -93,7 +95,8 @@ public class Convert {
 					
 					
 					if (index == 0) {
-						jsonArray.put(point);											
+						jsonArray.put(point);
+						//jsonArray.put(pos.getVector());
 					}
 				}
 				if (index == 0) {
@@ -104,7 +107,39 @@ public class Convert {
 				index++;
 			}
 		}
+		List<SpaceLayerMember> spaceMemberList = indoorFeatures.getMultiLayeredGraph().getMultiLayeredGraph().getSpaceLayers().getSpaceLayerMember();
+		
+		for (SpaceLayerMember spaceLayerMember : spaceMemberList) {
+			List<StateMember> stateMemberList = spaceLayerMember.getSpaceLayer().getNodes().getStateMember();
+			for (StateMember stateMember : stateMemberList) {
+				List<Pos> posList = stateMember.getState().getGeometry().getPoint().getPos();
+				for (Pos pos : posList) {
+					String[] tokens = pos.getSmallCommaVector().split(",");
 
+					double Xpoint = Double.parseDouble(tokens[0]);
+					double Yline = Double.parseDouble(tokens[1]);
+
+					double resultX = myGT[0] + Xpoint * myGT[1] + Yline * myGT[2];
+					double resultY = myGT[3] + Xpoint * myGT[4] + Yline * myGT[5];
+
+					SpatialReference s_srs = new SpatialReference();
+					SpatialReference t_srs = new SpatialReference();
+					s_srs.ImportFromEPSG(4326);
+					t_srs.ImportFromEPSG(3857);
+
+					CoordinateTransformation ct = CoordinateTransformation.CreateCoordinateTransformation(s_srs, t_srs);
+
+					double[] epsg3857 = ct.TransformPoint(resultX, resultY);
+					
+					pos.changeX(resultX);
+					pos.changeY(resultY);
+					
+					pos.changeVector();
+				}
+			}
+		}
+		//List<Node> nodeList = indoorFeatures.getMultiLayeredGraph().getMultiLayeredGraph().getSpaceLayers().getSpaceLayerMember();
+		
 		Jaxb.marshall(indoorFeatures);
 		
 		JSONObject jsonObject = new JSONObject();

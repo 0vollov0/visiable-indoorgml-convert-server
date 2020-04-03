@@ -4,7 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -17,6 +19,7 @@ import com.gml.primalspace.IndoorFeatures;
 import com.gml.primalspace.Pos;
 import com.gml.primalspace.PrimalSpaceFeatures;
 import com.gml.primalspace.SurfaceMember;
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 public class Jaxb {
 	public static IndoorFeatures unmarshall(Path filePath){
@@ -44,11 +47,11 @@ public class Jaxb {
 		
 		
 		try {
-			context = JAXBContext.newInstance(IndoorFeatures.class,PrimalSpaceFeatures.class);
+			context = JAXBContext.newInstance(IndoorFeatures.class);
 			marshaller = context.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new DefaultNamespacePrefixMapper());
 			//marshaller.setSchema(arg0);
-			marshaller.marshal(indoorFeatures, new FileOutputStream("indoorGML.gml"));
+			marshaller.marshal(indoorFeatures, new FileOutputStream("./uploadedIndoorGML/converted_indoorGML.gml"));
 		} catch (JAXBException | FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -90,13 +93,4 @@ public class Jaxb {
 		return jsonObject;
 	}
 	
-//	private static File multipartToFile(MultipartFile multipartFile) {
-//		File file = new File(multipartFile.getOriginalFilename());
-//		try {
-//			multipartFile.transferTo(file);
-//		} catch (IllegalStateException | IOException e) {
-//			e.printStackTrace();
-//		}
-//		return file;
-//	}
 }
